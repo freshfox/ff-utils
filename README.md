@@ -1,2 +1,2 @@
 # ff-utils
-Zero dependency nodeJS utils
+Minimal dependency nodeJS utils
