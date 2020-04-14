@@ -1,14 +1,17 @@
 {
   "name": "ff-utils",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Minimal dependency nodeJS utils",
-  "main": "index.js",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "repository": "git@github.com:freshfox/ff-utils.git",
   "author": "Dominic Bartl <dominic@freshfox.at>",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "test": "mocha dist/test"
+    "test": "NODE_ENV=test mocha dist/test",
+    "preversion": "git pull && yarn build && yarn test",
+    "postversion": "git push --follow-tags && npm publish"
   },
   "peerDependencies": {
     "lodash": "^4.17.15"
@@ -21,5 +24,11 @@
     "should": "^13.2.3",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
-  }
+  },
+  "files": [
+    "src/lib",
+    "dist/lib",
+    "README.md",
+    "LICENSE"
+  ]
 }
