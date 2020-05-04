@@ -11,22 +11,28 @@ describe('Common', function () {
             const start = Date.now();
             const func = debounce((call) => {
                 calls.push([call, Date.now() - start]);
-            }, 100, true);
+            }, 100);
 
+            func(0);
             func(1);
+            await wait(200);
             func(2);
-            await wait(200);
-            func(3);
             await wait(50);
-            func(4);
-            await wait(200);
+            func(3);
 
-            should(calls).length(2);
-            should(calls[0][0]).eql(1);
-            should(calls[0][1]).greaterThanOrEqual(0).belowOrEqual(5);
+            // Wait to finish
+            await wait(300);
 
-            should(calls[1][0]).eql(3);
-            should(calls[1][1]).greaterThanOrEqual(200).belowOrEqual(205);
+            function check(i: number, lower: number) {
+                should(calls[i][0]).eql(i);
+                should(calls[i][1]).greaterThanOrEqual(lower).belowOrEqual(lower + 5);
+            }
+
+            should(calls).length(4);
+            check(0, 0);
+            check(1, 100);
+            check(2, 200);
+            check(3, 350);
         });
 
     });
