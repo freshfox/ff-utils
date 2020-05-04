@@ -42,7 +42,7 @@ export function wait(ms: number) {
 // leading edge, instead of the trailing.
 // https://davidwalsh.name/javascript-debounce-function
 type Callback = (...args: any[]) => any
-export function debounce(func: Callback, ms: number, immediate: boolean): Callback {
+export function debounce(func: Callback, ms: number, immediate?: boolean): Callback {
     let timeout;
     return function(...a: any[]) {
         const context = this, args = arguments;
