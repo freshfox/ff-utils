@@ -15,6 +15,12 @@ export function camelCaseObjectKeys(object: any) {
     return obj;
 }
 
+export function round(num: number, precision?: number) {
+    precision = precision || 0;
+    const p = Math.pow(10, precision);
+    return Math.round(num * p) / p;
+}
+
 export function random(lower?: number, upper?: number) {
     lower = lower || 0;
     upper = upper || 1;

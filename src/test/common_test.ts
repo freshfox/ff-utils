@@ -1,4 +1,4 @@
-import {debounce, wait} from "../lib";
+import {debounce, round, wait} from "../lib";
 import * as should from 'should';
 
 describe('Common', function () {
@@ -33,6 +33,19 @@ describe('Common', function () {
             check(1, 100);
             check(2, 200);
             check(3, 350);
+        });
+
+    });
+
+    describe('#round', function () {
+
+        it('should round a few numbers', async () => {
+
+            should(round(1.1111, 2)).eql(1.11);
+            should(round(1.1511, 0)).eql(1);
+            should(round(1.6111, 1)).eql(1.6);
+            should(round(1.6111, 0)).eql(2);
+
         });
 
     });
