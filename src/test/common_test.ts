@@ -21,7 +21,7 @@ describe('Common', function () {
             func(3);
 
             // Wait to finish
-            await wait(300);
+            await wait(500);
 
             function check(i: number, lower: number) {
                 should(calls[i][0]).eql(i);
