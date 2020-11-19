@@ -1,11 +1,12 @@
-import * as _ from 'lodash';
+import isPlainObject from 'lodash.isplainobject';
+import camelCase from 'lodash.camelcase';
 
 export function camelCaseObjectKeys(object: any) {
     const obj = {};
     Object.keys(object).forEach((key: string) => {
-        const ccKey = _.camelCase(key);
+        const ccKey = camelCase(key);
         const value = object[key];
-        if (_.isPlainObject(value)) {
+        if (isPlainObject(value)) {
             obj[ccKey] = this.camelCaseObjectKeys(value);
         } else {
             obj[ccKey] = value;
