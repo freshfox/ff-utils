@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Minimal dependency nodeJS utils",
   "main": "dist/lib/index.js",
+  "browser": "dist/lib/browser.js",
   "types": "dist/lib/index.d.ts",
   "repository": "git@github.com:freshfox/ff-utils.git",
   "author": "Dominic Bartl <dominic@freshfox.at>",
