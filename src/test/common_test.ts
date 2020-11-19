@@ -1,4 +1,4 @@
-import {debounce, round, wait} from "../lib";
+import {debounce, enumToArray, round, wait} from '../lib';
 import * as should from 'should';
 
 describe('Common', function () {
@@ -47,6 +47,31 @@ describe('Common', function () {
             should(round(1.6111, 0)).eql(2);
 
         });
+
+    });
+
+    describe('#enumToArray', function () {
+
+        it('should transform a number enum to an array', async () => {
+            enum Foo {
+                Foo,
+                Bar
+            }
+
+            const arr = enumToArray(Foo);
+            should(arr).eql([0, 1]);
+        });
+
+        it('should transform a string enum to an array', async () => {
+            enum Foo {
+                Foo = 'FOO',
+                Bar = 'BAR'
+            }
+
+            const arr = enumToArray(Foo);
+            should(arr).eql(['FOO', 'BAR']);
+        });
+
 
     });
 

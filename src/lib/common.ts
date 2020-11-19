@@ -63,3 +63,15 @@ export function debounce(func: Callback, ms: number): Callback {
         }
     };
 }
+
+
+export function enumToArray<E>(Enum: E): E[(keyof E)][] {
+    let keys = Object.keys(Enum);
+    const hasNumbers = keys.some(k => !isNaN(Number(k)));
+
+    if (hasNumbers) {
+        keys = keys.filter(v => isNaN(Number(v)));
+    }
+
+    return keys.map(key => (Enum[key]));
+}
