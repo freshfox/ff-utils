@@ -1,20 +1,3 @@
-import isPlainObject from 'lodash.isplainobject';
-import camelCase from 'lodash.camelcase';
-
-export function camelCaseObjectKeys(object: any) {
-    const obj = {};
-    Object.keys(object).forEach((key: string) => {
-        const ccKey = camelCase(key);
-        const value = object[key];
-        if (isPlainObject(value)) {
-            obj[ccKey] = this.camelCaseObjectKeys(value);
-        } else {
-            obj[ccKey] = value;
-        }
-    });
-
-    return obj;
-}
 
 export function round(num: number, precision?: number) {
     precision = precision || 0;
