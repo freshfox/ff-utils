@@ -8,12 +8,7 @@
 export async function processPromisesParallel<T, K>(
     items: T[], batchSize: number,
     handler: (item: T) => Promise<K>,
-    onUpdate?: (status: {
-        running: number,
-        done: number,
-        total: number,
-        queued: number
-    }) => void): Promise<K[]> {
+    onUpdate?: OnUpdateCallback): Promise<K[]> {
 
     items = [...items];
     const all: K[] = [];
@@ -22,13 +17,16 @@ export async function processPromisesParallel<T, K>(
     let done = 0;
     let running = 0;
 
-    function update() {
-        if (onUpdate) onUpdate({
-            running,
-            done,
-            total: total,
-            queued: total - (done + running)
-        });
+    function update(type: OnUpdateCallbackArgs['type']) {
+        if (onUpdate) {
+            onUpdate({
+                type,
+                running,
+                done,
+                total: total,
+                queued: total - (done + running)
+            });
+        }
     }
 
     async function executeNext() {
@@ -37,12 +35,12 @@ export async function processPromisesParallel<T, K>(
             return;
         }
         running++;
-        update();
+        update('added');
         const result = await handler(item);
         all.push(result);
         running--;
         done++;
-        update();
+        update('finished');
         if (items.length > 0) {
             await executeNext();
         }
@@ -55,6 +53,25 @@ export async function processPromisesParallel<T, K>(
 
     await Promise.all(promises);
     return all;
+}
+
+export type OnUpdateCallback = (args: OnUpdateCallbackArgs) => void
+
+export interface OnUpdateCallbackArgs {
+    type: 'added' | 'finished'
+    running: number,
+    done: number,
+    total: number,
+    queued: number
+}
+
+export function logStartedNewItems(logger?: typeof console.log): OnUpdateCallback {
+    logger = logger || console.log
+    return (args) => {
+        if (args.type === 'added') {
+            logger(`Finished (${args.done}/${args.total}); Running: ${args.running}; Queued: ${args.queued}`);
+        }
+    }
 }
 
 export async function processPromisesParallelWithRetries<T, K>(
