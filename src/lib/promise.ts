@@ -65,13 +65,29 @@ export interface OnUpdateCallbackArgs {
     queued: number
 }
 
-export function logStartedNewItems(logger?: typeof console.log): OnUpdateCallback {
-    logger = logger || console.log
-    return (args) => {
-        if (args.type === 'added') {
-            logger(`Finished (${args.done}/${args.total}); Running: ${args.running}; Queued: ${args.queued}`);
+export interface CreateLoggerArgs {
+    logger?: typeof console.log;
+    logEvery?: number;
+    logExtras?: any[];
+}
+
+function logItemsByType(type: OnUpdateCallbackArgs['type'], args?: CreateLoggerArgs): OnUpdateCallback {
+    const logger = args?.logger || console.log
+    return (status) => {
+        if (status.type === type && (!args?.logEvery || status.done % args.logEvery === 0 || status.done === status.total)) {
+            const str = `Finished (${status.done}/${status.total}); Running: ${status.running}; Queued: ${status.queued}`;
+            const logArgs = args?.logExtras ? [...args.logExtras, str] : [str];
+            logger(...logArgs);
         }
     }
+}
+
+export function logStartedNewItems(args?: CreateLoggerArgs) {
+    return logItemsByType('added', args);
+}
+
+export function logFinishedItems(args?: CreateLoggerArgs) {
+    return logItemsByType('finished', args);
 }
 
 export async function processPromisesParallelWithRetries<T, K>(

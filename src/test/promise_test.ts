@@ -1,4 +1,4 @@
-import {processPromisesParallelWithRetries, wait} from '../lib';
+import {logFinishedItems, logStartedNewItems, processPromisesParallelWithRetries, wait} from '../lib';
 import {processPromisesParallel} from '../lib';
 import * as should from 'should';
 
@@ -12,7 +12,7 @@ describe('Promise', function () {
         await processPromisesParallel(items, 2, async (ms) => {
             await wait(ms);
             done.push(ms);
-        });
+        }, logFinishedItems({logEvery: 2, logExtras: ['A prefix']}));
         should(done).eql([20, 50, 100, 60, 30, 70]);
     });
 
