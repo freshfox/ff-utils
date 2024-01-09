@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "test": "NODE_ENV=test mocha './src/test/**/*.ts'",
-    "preversion": "git pull && yarn build && yarn test",
+    "preversion": "git pull && pnpm build && pnpm test",
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
